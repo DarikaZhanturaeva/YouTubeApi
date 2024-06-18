@@ -2,7 +2,6 @@ package com.example.youtubeapi.di
 
 import com.example.youtubeapi.BuildConfig
 import com.example.youtubeapi.data.api_services.YouTubeApiService
-import com.example.youtubeapi.data.repository.YouTubeRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -12,27 +11,31 @@ import java.util.concurrent.TimeUnit
 
 val networkModule = module {
 
-    single {
-        OkHttpClient.Builder()
-            .writeTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .addInterceptor(get<HttpLoggingInterceptor>())
-            .build()
-    }
-    single {
-        Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(get())
-            .build()
-
-    }
-    single {
-        HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-    }
-    single {
-        get<Retrofit>().create(YouTubeApiService::class.java)
-    }
+    single { provideApiService(get()) }
+    single { provideRetrofit(get()) }
+    single { provideOkHttpClient(get()) }
+    single { provideInterceptor() }
 }
+
+fun provideRetrofit(
+    okHttpClient: OkHttpClient
+): Retrofit = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
+    .addConverterFactory(GsonConverterFactory.create())
+    .client(okHttpClient)
+    .build()
+
+fun provideOkHttpClient(
+    interceptor: HttpLoggingInterceptor
+): OkHttpClient = OkHttpClient.Builder()
+        .writeTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .addInterceptor(interceptor)
+        .build()
+
+fun provideInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+    level = HttpLoggingInterceptor.Level.BODY
+}
+
+fun provideApiService(retrofit: Retrofit): YouTubeApiService =
+    retrofit.create(YouTubeApiService::class.java)

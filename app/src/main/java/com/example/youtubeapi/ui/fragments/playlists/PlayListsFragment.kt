@@ -1,48 +1,38 @@
 package com.example.youtubeapi.ui.fragments.playlists
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.example.youtubeapi.data.model.Item
 import com.example.youtubeapi.databinding.FragmentPlayListsBinding
 import com.example.youtubeapi.ui.adapters.PlaylistsAdapter
+import com.example.youtubeapi.ui.base.BaseFragment
+import com.example.youtubeapi.utils.Resource
 
-class PlayListsFragment : Fragment() {
+class PlayListsFragment :
+    BaseFragment<FragmentPlayListsBinding>(FragmentPlayListsBinding::inflate) {
 
-    private lateinit var binding: FragmentPlayListsBinding
     private val viewModel: PlayListsViewModel by viewModel()
-    private var playlists = arrayListOf<Item>()
-    private val playlistsAdapter: PlaylistsAdapter by lazy {
-        PlaylistsAdapter(
-            playlists
+    private val playlistsAdapter: PlaylistsAdapter by lazy { PlaylistsAdapter() }
+
+
+    override fun setupViews() {
+        super.setupViews()
+        setupRecycler()
+    }
+
+    override fun setupObservers() {
+        viewModel.getPlayLists().stateHandler(
+            success = { data ->
+                playlistsAdapter.submitList(data)
+            },
+            state = { state ->
+                binding.pbLoading.isVisible = state is Resource.Loading
+            }
         )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentPlayListsBinding.inflate(inflater,container,false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initialize()
-        setupObservers()
-    }
-
-    private fun setupObservers() {
-        viewModel.getPlayLists().observe(viewLifecycleOwner) {
-            binding.pbLoading.isVisible = false
-        }
-    }
-
-    private fun initialize() {
-        binding.rvPlaylists.adapter = playlistsAdapter
+    private fun setupRecycler() = with(binding.rvPlaylists) {
+        adapter = playlistsAdapter
+        layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 }

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
             android:background="#C14C4848"
-            android:text="playlist"
+            android:text="@string/playlist"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -36,13 +36,14 @@
 
     <TextView
         android:id="@+id/tv_name_playlist"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginStart="15dp"
-        android:text="Emotional Well-being Healing \nPractices for Children"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        tools:text="Emotional Well-being Healing Practices for Children"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/frame_layout"
         app:layout_constraintTop_toTopOf="@id/frame_layout" />
 
@@ -51,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="18 video"
+        tools:text="18 video"
         android:textSize="14sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="@id/frame_layout"

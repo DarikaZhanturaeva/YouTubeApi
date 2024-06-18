@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
@@ -99,5 +100,4 @@ dependencies {
 
     //Koin
     implementation(libs.koin.android)
-    //implementation ("org.koin:koin-androidx-viewmodel:3.1.2")
 }

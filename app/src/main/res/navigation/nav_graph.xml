@@ -10,4 +10,5 @@
         android:name="com.example.youtubeapi.ui.fragments.playlists.PlayListsFragment"
         android:label="fragment_play_lists"
         tools:layout="@layout/fragment_play_lists" />
+
 </navigation>
