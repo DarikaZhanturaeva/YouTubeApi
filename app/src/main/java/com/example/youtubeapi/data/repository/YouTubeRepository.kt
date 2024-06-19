@@ -1,6 +1,7 @@
 package com.example.youtubeapi.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
 import com.example.youtubeapi.BuildConfig
 import com.example.youtubeapi.data.api_services.YouTubeApiService
 import com.example.youtubeapi.data.base.BaseRepository
@@ -28,5 +29,15 @@ class YouTubeRepository(
         } else {
             Response.error(response.errorBody()!!, response.raw())
         }
+    }
+
+     fun getVideos(): Response<BaseResponse> {
+        val response = api.getPlaylistItems(
+            part = Constants.PART,
+            maxResults = Constants.MAX_RESULTS,
+            apiKey = BuildConfig.API_KEY,
+            playlistId = " "
+        )
+        return response
     }
 }

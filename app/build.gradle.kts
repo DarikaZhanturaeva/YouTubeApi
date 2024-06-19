@@ -100,4 +100,7 @@ dependencies {
 
     //Koin
     implementation(libs.koin.android)
+
+    //youtube-player
+    implementation (libs.core)
 }

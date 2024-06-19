@@ -1,4 +1,4 @@
-package com.example.youtubeapi.ui.adapters
+package com.example.youtubeapi.ui.fragments.playlists.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
